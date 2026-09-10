@@ -60,17 +60,17 @@ human-in-the-loop interrupt/resume via checkpointing.
                                            +-> :hold               (:hard? true)
 ```
 
-- `src/filing_copying/store.cljc` — `Store` protocol +
+- `src/filing_copying/store.kotoba` — `Store` protocol +
   `MemStore`: registered client mandates, committed records, an
   append-only audit ledger.
-- `src/filing_copying/advisor.cljc` — `Advisor` protocol;
+- `src/filing_copying/advisor.kotoba` — `Advisor` protocol;
   `mock-advisor` (deterministic, default) proposes a filing or
   copying operation from a request; `llm-advisor` wraps a
   `langchain.model/ChatModel` — either way the advisor only ever
   produces a `:propose`-effect proposal, never a committed record, and
   LLM parse failures always yield `confidence 0.0` (forces escalation,
   never fabricated confidence).
-- `src/filing_copying/governor.cljc` —
+- `src/filing_copying/governor.kotoba` —
   `FilingCopyingGovernor/check`: a pure function, wired as its own
   `:govern` node. Hard invariants (unregistered mandate, a proposal
   whose `:effect` isn't `:propose`) always route to `:hold`. Escalation
@@ -82,7 +82,7 @@ human-in-the-loop interrupt/resume via checkpointing.
   that handling confidential or legally privileged documents, or
   destroying a document past retention policy, always requires human
   sign-off.
-- `src/filing_copying/actor.cljc` — `build-graph`, `run-request!`,
+- `src/filing_copying/actor.kotoba` — `build-graph`, `run-request!`,
   `approve!`: the `langgraph.graph/state-graph` wiring itself.
 
 ```bash
