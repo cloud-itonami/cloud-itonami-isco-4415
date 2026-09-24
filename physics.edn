@@ -1,0 +1,33 @@
+;; What this vertical's robot physically does, declared for
+;; kotoba.robotics.process (kotoba-lang/robotics). `kbb -M:physics` runs it.
+;;
+;; README "Robotics premise": a filing-and-copying robot performs physical
+;; document sorting, copying and archive placement. Declared here: a filed
+;; archive box placed in its archive shelf position, and the sorting cart
+;; (paper for the copier going out, originals to file coming back) pushed
+;; between the copy room and the archive.
+;;
+;; Every number without a cited source is marked `estimate` in its :basis.
+;; Replacing an estimate with a sourced value is this bot's growth work.
+{:physics/schema "itonami.physical-ai.spec.v1"
+ :repo "cloud-itonami/cloud-itonami-isco-4415"
+ :cases
+ [{:id :archive-box-placement
+   :kind :manipulator
+   :procedure "arm places a filed archive box from the sorting cart into its archive shelf position"
+   :params {:l1-m 0.55 :l2-m 0.50 :m1-kg 5.0 :m2-kg 3.5
+            :from [0.60 0.20] :to [0.45 0.85] :duration-s 2.5 :steps 500}
+   :sweep {:param :payload-kg :values [2.0 4.0 7.0 10.0 14.0]}
+   :quantity :peak-tau1-nm
+   :limit {:max 100.0 :basis "estimate: continuous shoulder torque of a ~10 kg-payload collaborative arm"}
+   :boundary {:lo 0.5 :hi 40.0}}
+  {:id :sorting-cart-copy-room-to-archive
+   :kind :transport
+   :procedure "robot pushes the sorting cart of originals and copier paper between the copy room and the archive"
+   :params {:mass-kg 45.0 :distance-m 30.0 :v-max-mps 0.9 :a-max-mps2 0.5
+            :brake-decel-mps2 0.7 :drive-force-n 70.0 :crr 0.025
+            :cog-height-m 0.65 :support-half-length-m 0.30}
+   :sweep {:param :payload-kg :values [10.0 30.0 60.0 90.0 130.0]}
+   :quantity :cycle-time-s
+   :limit {:max 45.0 :basis "estimate: one copy-room-to-archive leg inside the filing round's per-leg budget"}
+   :boundary {:lo 1.0 :hi 400.0}}]}
