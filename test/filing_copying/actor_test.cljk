@@ -1,5 +1,5 @@
 (ns filing-copying.actor-test
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require [kotoba.test :refer [deftest is testing]]
             [filing-copying.actor :as actor]
             [filing-copying.store :as store]))
 

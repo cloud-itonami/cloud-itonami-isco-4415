@@ -1,5 +1,5 @@
 (ns filing-copying.governor-test
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require [kotoba.test :refer [deftest is testing]]
             [filing-copying.store :as store]
             [filing-copying.governor :as governor]))
 
